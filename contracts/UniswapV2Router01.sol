@@ -166,6 +166,17 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
 
     // **** SWAP ****
     // requires the initial amount to have already been sent to the first pair
+
+
+//it will take input as amounts array , path array, and address _to
+// addr input and output are defined using path array 
+//then using sort function sorting lexographical for ease working of uniswap 
+//-> ensuring correct pair computation 
+//then declaring amountsout as this will be the output we will get if swap happens 
+//then in next line we r declaring according to input if input is token0 implies amoutout will be equal to amount1out and viceversa
+//in next line checking is i is at last swap now it will tell whether to send output token to defined address or
+// to next pool address then in last line again calling swap function to swap the tokens....
+
     function _swap(uint[] memory amounts, address[] memory path, address _to) private {
         for (uint i; i < path.length - 1; i++) {
             (address input, address output) = (path[i], path[i + 1]);
@@ -176,6 +187,9 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
             IUniswapV2Pair(UniswapV2Library.pairFor(factory, input, output)).swap(amount0Out, amount1Out, to, new bytes(0));
         }
     }
+
+
+
 
 //- amountIn: The exact number of input tokens that the user is providing for the swap.
 // amountoutmin will define by trader means he will tell the least amount of token he wants.
