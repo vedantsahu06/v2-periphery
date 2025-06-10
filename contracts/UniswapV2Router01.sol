@@ -212,8 +212,6 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
 //amount[1] = expected outpur for first swap that is amount we get of WETH if swap b/t DAI and WETH happen.
 // amounts[2] =expected outpur for second swap that is amount we get of USDC if swap b/t WETH and USDC happen.
 //last ined is output we need..
-
-
         require(amounts[amounts.length - 1] >= amountOutMin, 'UniswapV2Router: INSUFFICIENT_OUTPUT_AMOUNT');
         TransferHelper.safeTransferFrom(path[0], msg.sender, UniswapV2Library.pairFor(factory, path[0], path[1]), amounts[0]);
 // transfer for input tokens from trader to first pool
