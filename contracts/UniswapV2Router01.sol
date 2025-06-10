@@ -176,6 +176,13 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
             IUniswapV2Pair(UniswapV2Library.pairFor(factory, input, output)).swap(amount0Out, amount1Out, to, new bytes(0));
         }
     }
+
+//- amountIn: The exact number of input tokens that the user is providing for the swap.
+// amountoutmin will define by trader means he will tell the least amount of token he wants.
+//The path is essentially a roadmap that guides the swap process, ensuring the trader gets the best possible output based on available liquidity pools.
+//- If a direct liquidity pool exists for the input and output tokens, the swap occurs in one step.
+//- If not, the trader must specify a multi-hop path, where intermediate tokens facilitate the swap
+
     function swapExactTokensForTokens(
         uint amountIn,
         uint amountOutMin,
@@ -183,9 +190,21 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
         address to,
         uint deadline
     ) external override ensure(deadline) returns (uint[] memory amounts) {
+
         amounts = UniswapV2Library.getAmountsOut(factory, amountIn, path);
+//amounts is an array... getAmountOut will return an array...it will tell the expexted price you will get if the swaps happen..
+//(path = [DAI, WETH, USDC])
+// amounts[0] = amount in -> initial amount
+//amount[1] = expected outpur for first swap that is amount we get of WETH if swap b/t DAI and WETH happen.
+// amounts[2] =expected outpur for second swap that is amount we get of USDC if swap b/t WETH and USDC happen.
+//last ined is output we need..
+
+
         require(amounts[amounts.length - 1] >= amountOutMin, 'UniswapV2Router: INSUFFICIENT_OUTPUT_AMOUNT');
         TransferHelper.safeTransferFrom(path[0], msg.sender, UniswapV2Library.pairFor(factory, path[0], path[1]), amounts[0]);
+// transfer for input tokens from trader to first pool
+//Determine the Liquidity Pool Address: using this UniswapV2Library.pairFor(factory, path[0], path[1]);
+
         _swap(amounts, path, to);
     }
     function swapTokensForExactTokens(
