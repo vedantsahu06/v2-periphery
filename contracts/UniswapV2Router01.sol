@@ -219,6 +219,19 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
 
         _swap(amounts, path, to);
     }
+
+
+//function taken input from trader that tell exact amount of output tokens he want 
+//also it takes maximum input token he can spend as input.
+//path is same as earlier 
+// to is address where o/p tokens needs to be transfer. 
+//deadline is time..means before this time trans. should proceed
+//amounts is an array which is calling getAmountsIn function which is returning an array consisting of amount of input tokens requiured for the swap.
+//0th index contains the amoount of input token require to send by user to reciever that o/p token.
+//checking that the final input the trader will give should be less than amountInMax.. 
+//then same as earlier for transfer part then swap function is called
+
+
     function swapTokensForExactTokens(
         uint amountOut,
         uint amountInMax,
