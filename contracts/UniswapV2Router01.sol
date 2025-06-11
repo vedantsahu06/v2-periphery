@@ -259,6 +259,19 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
         assert(IWETH(WETH).transfer(UniswapV2Library.pairFor(factory, path[0], path[1]), amounts[0]));
         _swap(amounts, path, to);
     }
+
+//done by copilot easily explained
+//This function ensures that the trader receives exactly amountOut ETH, while making sure the input token amount does not exceed amountInMax.
+//- Ensures that the final token in the path is WETH,
+//- Calls getAmountsIn() to determine how many input tokens are needed to get amountOut ETH.
+//- Ensures the calculated input tokens do not exceed what the trader is willing to spend (amountInMax).
+//- If exceeded, the transaction reverts.
+//- Moves the required input tokens from the trader's wallet to the liquidity pool.
+//- Performs the swap following the constant product formula ( x \cdot y = k ).
+//- The output (WETH) is sent to the contract itself (address(this)) to prepare for ETH conversion.
+//- Calls withdraw() on the WETH contract.
+//- This burns WETH and releases ETH back into the contract.
+//- Transfers the final ETH amount to the trader
     function swapTokensForExactETH(uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline)
         external
         override
