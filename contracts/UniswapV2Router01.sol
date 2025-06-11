@@ -166,8 +166,6 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
 
     // **** SWAP ****
     // requires the initial amount to have already been sent to the first pair
-
-
 //it will take input as amounts array , path array, and address _to
 // addr input and output are defined using path array 
 //then using sort function sorting lexographical for ease working of uniswap 
@@ -176,7 +174,6 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
 //then in next line we r declaring according to input if input is token0 implies amoutout will be equal to amount1out and viceversa
 //in next line checking is i is at last swap now it will tell whether to send output token to defined address or
 // to next pool address then in last line again calling swap function to swap the tokens....
-
     function _swap(uint[] memory amounts, address[] memory path, address _to) private {
         for (uint i; i < path.length - 1; i++) {
             (address input, address output) = (path[i], path[i + 1]);
@@ -189,14 +186,11 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
     }
 
 
-
-
 //- amountIn: The exact number of input tokens that the user is providing for the swap.
 // amountoutmin will define by trader means he will tell the least amount of token he wants.
 //The path is essentially a roadmap that guides the swap process, ensuring the trader gets the best possible output based on available liquidity pools.
 //- If a direct liquidity pool exists for the input and output tokens, the swap occurs in one step.
 //- If not, the trader must specify a multi-hop path, where intermediate tokens facilitate the swap
-
     function swapExactTokensForTokens(
         uint amountIn,
         uint amountOutMin,
@@ -230,8 +224,6 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
 //0th index contains the amoount of input token require to send by user to reciever that o/p token.
 //checking that the final input the trader will give should be less than amountInMax.. 
 //then same as earlier for transfer part then swap function is called
-
-
     function swapTokensForExactTokens(
         uint amountOut,
         uint amountInMax,
@@ -244,6 +236,15 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
         TransferHelper.safeTransferFrom(path[0], msg.sender, UniswapV2Library.pairFor(factory, path[0], path[1]), amounts[0]);
         _swap(amounts, path, to);
     }
+
+
+//since eth is not erc-20 token so we cant swap directly  but trader have eth and want some other token
+//so defining path, address to deadline and minimum output trader want.
+//firstly checking first element in path array should be WETH. 
+//as WETH is similar as ETH and can be used as erc-20 token.
+//then depositing WETH - Calls deposit() on the WETH contract, locking ETH and minting an equal amount of WETH.
+// uses transfer() to move WETH into the correct pair contract (found via pairFor()).
+//asserting whether transfer is successfully done in required pool if any fails immediately reverts.. then swap is calling
     function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline)
         external
         override
