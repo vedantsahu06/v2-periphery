@@ -26,7 +26,15 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
         assert(msg.sender == WETH); // only accept ETH via fallback from the WETH contract
     }
 
+    //Firstly for swaps we have to maintain constant K but,
+    // for adding or removing liquidity we need to maintain token ratio.
+
     // **** ADD LIQUIDITY ****
+    // amountXdesired -> means this much amount i can invest max.
+    //amountXmin -> means if going below this amount then i am out ...
+    // checking if pair is there and getting the address after this getting the current reservers pool has
+    // if reserve is zero => means first trans so amountA = amountADesired and amountB= amountBDesired
+    // if not then first getting BOptimal using current ratio..neccesary checks then returning 
     function _addLiquidity(
         address tokenA,
         address tokenB,
@@ -63,6 +71,8 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
 //- The minimum acceptable amount of a token the user is willing to add.
 //- Acts as slippage protection: if the actual required deposit is below this, the transaction reverts.
 //- Shields users from price manipulation or front-running during pending transactions.
+//cal. amountA and amountB
+//then getting address of pool that is pair then transferring amountA then amountB and at last geting liquidity
 
     function addLiquidity(
         address tokenA,
