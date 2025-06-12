@@ -55,6 +55,15 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
             }
         }
     }
+
+//🔹 amountXDesired
+//- The maximum amount of a token the user wants to add.
+//- Used to express flexibility: the protocol may choose to use less than this to match pool ratios.
+//🔸 amountXMin
+//- The minimum acceptable amount of a token the user is willing to add.
+//- Acts as slippage protection: if the actual required deposit is below this, the transaction reverts.
+//- Shields users from price manipulation or front-running during pending transactions.
+
     function addLiquidity(
         address tokenA,
         address tokenB,
