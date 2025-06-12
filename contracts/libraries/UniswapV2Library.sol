@@ -33,6 +33,9 @@ library UniswapV2Library {
     }
 
     // given some amount of an asset and pair reserves, returns an equivalent amount of the other asset
+    //we know the reserves means tokenA is equal to some amount of tokenB 
+    //we have to maintain this ratio so we r providing amountA means this much amountA i am adding
+    // function will return the amount of tokenB required to add as we have to maintain the ratio....
     function quote(uint amountA, uint reserveA, uint reserveB) internal pure returns (uint amountB) {
         require(amountA > 0, 'UniswapV2Library: INSUFFICIENT_AMOUNT');
         require(reserveA > 0 && reserveB > 0, 'UniswapV2Library: INSUFFICIENT_LIQUIDITY');
